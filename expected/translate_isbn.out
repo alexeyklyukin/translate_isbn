@@ -1,0 +1,78 @@
+CREATE EXTENSION translate_isbn;
+-- proper ISBN13 code
+SELECT translate_isbn1013('9783161484100');
+    translate_isbn1013    
+--------------------------
+ 9783161484100 316148410X
+(1 row)
+
+-- make sure we can skip insignificant chars
+SELECT translate_isbn1013('9971-5-0210-0');
+    translate_isbn1013    
+--------------------------
+ 9971502100 9789971502102
+(1 row)
+
+-- make sure 'x' will be uppercased in a result
+SELECT translate_isbn1013('0-9752298-0-x');
+    translate_isbn1013    
+--------------------------
+ 097522980X 9780975229804
+(1 row)
+
+-- test insignificat chars for ISBN13 as well
+SELECT translate_isbn1013('978-0-306-40615-7');
+    translate_isbn1013    
+--------------------------
+ 9780306406157 0306406152
+(1 row)
+
+-- ISBN13 not stared with 978, make sure it's not converted to ISBN10
+SELECT translate_isbn1013('0000000000000');
+ translate_isbn1013 
+--------------------
+ 0000000000000
+(1 row)
+
+-- Invalid number of digits (11), the code should be displayed as is
+SELECT translate_isbn1013('00000000000');
+ translate_isbn1013 
+--------------------
+ 00000000000
+(1 row)
+
+-- Make sure we can skip insignificant characters
+SELECT translate_isbn1013('foo123-45-baz678-90bar');
+         translate_isbn1013          
+-------------------------------------
+ 1234567890 123456789X 9781234567897
+(1 row)
+
+-- Make sure only trailing X is allowed for ISBN 10
+SELECT translate_isbn1013('X987654321');
+ translate_isbn1013 
+--------------------
+ X987654321
+(1 row)
+
+-- Make sure only code that is 10 or 13 characters is considered valud
+SELECT translate_isbn1013('921043215XX');
+ translate_isbn1013 
+--------------------
+ 921043215XX
+(1 row)
+
+-- How do we deal with codes that are totally bogus?
+SELECT translate_isbn1013('bogusvalue');
+ translate_isbn1013 
+--------------------
+ bogusvalue
+(1 row)
+
+-- Make sure we can process strings that consist of multiple values.
+select translate_isbn1013('9785431249023 43293489X 12-dd-34-56-zz-21-9X foobar 978212043210X');
+                                                translate_isbn1013                                                 
+-------------------------------------------------------------------------------------------------------------------
+ 9785431249023 9785431249020 5431249029 123456219X 1234562197 9781234562199 978212043210X 9782120432107 2120432104
+(1 row)
+

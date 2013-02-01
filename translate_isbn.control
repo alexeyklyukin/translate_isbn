@@ -1,0 +1,4 @@
+comment = 'translate_isbn: a function to translate ISBN codes (as text strings) between ISBN13 and ISBN10 formats'
+default_version = '1.0'
+module_pathname = '$libdir/translate_isbn'
+relocatable = true
