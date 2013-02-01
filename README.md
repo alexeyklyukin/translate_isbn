@@ -56,4 +56,8 @@ type, please, refer to the
 http://www.postgresql.org/docs/current/static/isn.html PostgreSQL contrib
 module.
 
+License:
 
+translate_isbn extension is issued under the BSD license.
+Commerical support is available from [Command Prompt, Inc](http://www.commandprompt.com). 
+Please, address your requests at support@commandprompt.com
